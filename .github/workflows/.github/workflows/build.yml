@@ -1,0 +1,45 @@
+
+name: Build Sword Reach Indicator
+
+on:
+  push:
+    paths:
+      - 'sword-reach-indicator-project.zip'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download repository files
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+
+      - name: Unpack mod project
+        run: |
+          mkdir -p project
+          unzip -q sword-reach-indicator-project.zip -d project
+
+      - name: Build mod JAR
+        working-directory: project
+        run: gradle build --no-daemon --stacktrace
+
+      - name: Upload finished JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: sword-reach-indicator-1.21.11
+          path: project/build/libs/sword-reach-indicator-*.jar
+          if-no-files-found: error
