@@ -22,7 +22,7 @@ jobs:
       - name: Unpack project
         run: |
           mkdir project
-          unzip -q sword-reach-indicator-project.zip -d project
+          unzip -q "sword-reach-indicator-project (1).zip" -d project
           F=$(find project \( -name build.gradle -o -name build.gradle.kts \) | head -n1)
           echo "PROJECT_DIR=$(dirname "$F")" >> $GITHUB_ENV
 
